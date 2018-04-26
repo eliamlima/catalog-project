@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Catalog App</title>
+		<link href="https://fonts.googleapis.com/css?family=Alegreya+Sans" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Alegreya" rel="stylesheet">
+		<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+	</head>
+	<body>
+		<header>
+			<div class="top">
+				<h1 class="name"> Catalog App </h1>
+				<a hreh="#"><button class="login"><b>Login</b></button><a>
+			</div>
+		</header>
+			{% block content %}
+			{% endblock %}
+	</body>
+</html>
