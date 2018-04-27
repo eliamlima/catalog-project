@@ -206,8 +206,15 @@ def showCatalog():
     # else:
     #     return render_template('restaurants.html', restaurants=restaurants)
 
+#show a specific Item
+@app.route('/catalog/<string:cat_name>/items')
+def showItems(cat_name):
+    catalog = session.query(Category).order_by(asc(Category.name))
+    cat = session.query(Category).filter_by(name=cat_name).one()
+    items = session.query(Item).filter_by(category_id=cat.id).all()
+    return render_template('menu.html', items = items, catalog=catalog, cat=cat)
 
-# Create a new restaurant
+# Create a new catego
 # @app.route('/restaurant/new/', methods=['GET', 'POST'])
 # def newRestaurant():
 #     if 'username' not in login_session:

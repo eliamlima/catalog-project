@@ -11,16 +11,6 @@ body{
   background-color: #cccccc;
 }
 
-.box {
-  width: 70%;
-  background-color: white;
-  border: thin solid #b3b3b3;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  position: absolute;
-  top: 25%;
-  margin: 0 15% 0 15%;
-}
-
 h2 {
   color: #003366;
   font-family: Arial, Helvetica, sans-serif;
@@ -32,6 +22,16 @@ h3 {
   color: #ed6500;
   font-family: 'Alegreya Sans', sans-serif;
   margin: 0 10px 5px 10px;
+}
+
+.box {
+  width: 70%;
+  background-color: white;
+  border: thin solid #b3b3b3;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  position: absolute;
+  top: 25%;
+  margin: 0 15% 0 15%;
 }
 
 .top{
@@ -62,4 +62,19 @@ h3 {
   margin: 0;
   padding: 0;
   display: inline-block;
+}
+
+.vl {
+  border-left: 1px solid #cccccc;
+  height: 90%;
+  position: absolute;
+  left: 30%;
+  margin-left: 10px;
+  top: 5%;
+}
+
+.items {
+  position: absolute;
+  left: 35%;
+  top: 0;
 }
