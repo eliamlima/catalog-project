@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, jsonify, url_for, flash
-from sqlalchemy import create_engine, asc
+from sqlalchemy import create_engine, asc, func
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Category, Item
 from flask import session as login_session
@@ -199,7 +199,6 @@ def catalogJSON():
 @app.route('/catalog/')
 def showCatalog():
     catalog = session.query(Category).order_by(asc(Category.name))
-    print catalog
     return render_template('catalog.html', catalog=catalog)
     # if 'username' not in login_session:
     #     return render_template('publicrestaurants.html',    restaurants=restaurants)
@@ -212,7 +211,13 @@ def showItems(cat_name):
     catalog = session.query(Category).order_by(asc(Category.name))
     cat = session.query(Category).filter_by(name=cat_name).one()
     items = session.query(Item).filter_by(category_id=cat.id).all()
-    return render_template('menu.html', items = items, catalog=catalog, cat=cat)
+    return render_template('publicmenu.html', items = items, catalog=catalog, cat=cat)
+
+@app.route('/catalog/<string:cat_name>/<string:item_name>')
+def showOneItem(cat_name, item_name):
+    cat = session.query(Category).filter_by(name=cat_name).one()
+    item = session.query(Item).filter_by(category_id=cat.id, name=item_name).one()
+    return render_template('publicitem.html', item = item)
 
 # Create a new catego
 # @app.route('/restaurant/new/', methods=['GET', 'POST'])
