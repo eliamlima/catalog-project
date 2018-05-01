@@ -210,8 +210,8 @@ def showCatalog():
 def showItems(cat_name):
     catalog = session.query(Category).order_by(asc(Category.name))
     cat = session.query(Category).filter_by(name=cat_name).one()
-    items = session.query(Item).filter_by(category_id=cat.id).all()
-    return render_template('menu.html', items = items, catalog=catalog, cat=cat)
+    items = session.query(Item).filter_by(category_id= cat.id).order_by(Item.name)
+    return render_template('menu.html', items = items, catalog=catalog, cat=cat, count = get_count(items))
 
 @app.route('/catalog/<string:cat_name>/<string:item_name>')
 def showOneItem(cat_name, item_name):
@@ -402,6 +402,11 @@ def editItem(item_name):
 #         return user.id
 #     except:
 #         return None
+
+def get_count(q):
+    count_q = q.statement.with_only_columns([func.count()]).order_by(None)
+    count = q.session.execute(count_q).scalar()
+    return count
 
 if __name__ == '__main__':
     app.secret_key = 'super_secret_key'
