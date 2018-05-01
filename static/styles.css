@@ -120,3 +120,23 @@ a:link {
   left: 35%;
   top: 10px;
 }
+
+.editdeletelink {
+  color: #ed6500;
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+}
+
+.editdeletebox {
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
+
+.vl-description {
+  border-left: 1px solid black;
+  height: 10px;
+  position: relative;
+  left: 0px;
+  margin-left: 5px;
+  display: inline-block;
+}
