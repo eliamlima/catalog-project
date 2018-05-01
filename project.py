@@ -211,13 +211,26 @@ def showItems(cat_name):
     catalog = session.query(Category).order_by(asc(Category.name))
     cat = session.query(Category).filter_by(name=cat_name).one()
     items = session.query(Item).filter_by(category_id=cat.id).all()
-    return render_template('publicmenu.html', items = items, catalog=catalog, cat=cat)
+    return render_template('menu.html', items = items, catalog=catalog, cat=cat)
 
 @app.route('/catalog/<string:cat_name>/<string:item_name>')
 def showOneItem(cat_name, item_name):
     cat = session.query(Category).filter_by(name=cat_name).one()
     item = session.query(Item).filter_by(category_id=cat.id, name=item_name).one()
     return render_template('publicitem.html', item = item)
+
+@app.route('/catalog/new/', methods=['GET', 'POST'])
+def newItem():
+    catalog = session.query(Category).order_by(asc(Category.name))
+    if request.method == 'POST':
+        selectedCategory = session.query(Category).filter_by(name = request.form['category']).one()
+        if request.form['title']:
+            newItem = Item(name=request.form['title'], description=request.form['description'], category_id=selectedCategory.id)
+            session.add(newItem)
+            session.commit()
+        return redirect(url_for('showItems', cat_name = selectedCategory.name))
+    else:
+        return render_template('newitem.html', catalog = catalog)
 
 # Create a new catego
 # @app.route('/restaurant/new/', methods=['GET', 'POST'])
