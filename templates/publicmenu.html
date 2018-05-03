@@ -1,7 +1,7 @@
-{% extends "catalog.html" %}
+{% extends "publiccatalog.html" %}
 {% block menu %}
 <div class="items">
-	<h2>{{cat.name}} Items ()</h2>
+	<h2>{{cat.name}} Items ({{count}} items)</h2>
 	{% for i in items %}
 	<a href="{{url_for('showOneItem', cat_name = cat.name, item_name = i.name)}}"><h3>{{i.name}}</h3></a>
 	{% endfor %}
