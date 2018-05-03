@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, jsonify, url_for, flash
 from sqlalchemy import create_engine, asc, func
 from sqlalchemy.orm import sessionmaker
-from database_setup import Base, Category, Item
+from database_setup import Base, Category, Item, User
 from flask import session as login_session
 import random
 import string
@@ -20,7 +20,7 @@ APPLICATION_NAME = "Catalog App"
 
 
 # Connect to Database and create database session
-engine = create_engine('sqlite:///catalog.db')
+engine = create_engine('sqlite:///catalogwithusers.db')
 Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
@@ -30,7 +30,6 @@ session = DBSession()
 # Create anti-forgery state token
 @app.route('/login')
 def showLogin():
-    print "showlogin"
     state = ''.join(random.choice(string.ascii_uppercase + string.digits)
                     for x in xrange(32))
     login_session['state'] = state
@@ -38,7 +37,7 @@ def showLogin():
     return render_template('login.html', STATE=state)
 #
 #
-# @app.route('/gconnect', methods=['POST'])
+@app.route('/gconnect', methods=['POST'])
 def gconnect():
     # Validate state token
     if request.args.get('state') != login_session['state']:
@@ -90,8 +89,7 @@ def gconnect():
     stored_access_token = login_session.get('access_token')
     stored_gplus_id = login_session.get('gplus_id')
     if stored_access_token is not None and gplus_id == stored_gplus_id:
-        response = make_response(json.dumps('Current user is already connected.'),
-                                 200)
+        response = make_response(json.dumps('Current user is already connected.'), 200)
         response.headers['Content-Type'] = 'application/json'
         return response
 
@@ -129,51 +127,51 @@ def gconnect():
     return output
 #
 #     # DISCONNECT - Revoke a current user's token and reset their login_session
-#
-#
-# @app.route('/gdisconnect')
-# def gdisconnect():
-#     access_token = login_session.get('access_token')
-#     if access_token is None:
-#         print 'Access Token is None'
-#         response = make_response(json.dumps('Current user not connected.'), 401)
-#         response.headers['Content-Type'] = 'application/json'
-#         return response
-#     print 'In gdisconnect access token is %s', access_token
-#     print 'User name is: '
-#     print login_session['username']
-#     url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' % login_session['access_token']
-#     h = httplib2.Http()
-#     result = h.request(url, 'GET')[0]
-#     print 'result is '
-#     print result
-#     if result['status'] == '200':
-#         del login_session['access_token']
-#         del login_session['gplus_id']
-#         del login_session['username']
-#         del login_session['email']
-#         del login_session['picture']
-#         response = make_response(json.dumps('Successfully disconnected.'), 200)
-#         response.headers['Content-Type'] = 'application/json'
-#         return response
-#     else:
-#         response = make_response(json.dumps('Failed to revoke token for given user.', 400))
-#         response.headers['Content-Type'] = 'application/json'
-#         return response
+@app.route('/gdisconnect')
+def gdisconnect():
+    access_token = login_session.get('access_token')
+    if access_token is None:
+        print 'Access Token is None'
+        response = make_response(json.dumps('Current user not connected.'), 401)
+        response.headers['Content-Type'] = 'application/json'
+        return response
+    print 'In gdisconnect access token is %s', access_token
+    print 'User name is: '
+    print login_session['username']
+    url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' % login_session['access_token']
+    h = httplib2.Http()
+    result = h.request(url, 'GET')[0]
+    print 'result is '
+    print result
+    if result['status'] == '200':
+        del login_session['access_token']
+        del login_session['gplus_id']
+        del login_session['username']
+        del login_session['email']
+        del login_session['picture']
+        response = make_response(json.dumps('Successfully disconnected.'), 200)
+        response.headers['Content-Type'] = 'application/json'
+        return response
+    else:
+        response = make_response(json.dumps('Failed to revoke token for given user.', 400))
+        response.headers['Content-Type'] = 'application/json'
+        return response
 #
 # #disconnect from any provider, still only google
-# @app.route('/disconnect')
-# def disconnect():
-#     if 'provider' in login_session:
-#         if login_session['provider'] == 'google':
-#             gdisconnect()
-#
-#         del login_session['provider']
-#         flash("You have Successfully been logged out!")
-#         return redirect(url_for('showRestaurants'))
-#     else:
-#         flash("You were not logged in to begin with.")
-#         return redirect(url_for('showRestaurants'))
+@app.route('/disconnect')
+def disconnect():
+    if 'provider' in login_session:
+        if login_session['provider'] == 'google':
+            gdisconnect()
+
+        del login_session['provider']
+        print "You have Successfully been logged out!"
+        flash("You have Successfully been logged out!")
+        return redirect(url_for('showCatalog'))
+    else:
+        print "You were not logged in to begin with."
+        flash("You were not logged in to begin with.")
+        return redirect(url_for('showCatalog'))
 
 #JSON APIs to view Restaurant Information
 @app.route('/catalog/<int:category_id>/JSON')
@@ -181,13 +179,7 @@ def catalogItemsJSON(category_id):
     category = session.query(Category).filter_by(id=category_id).one()
     items = session.query(Item).filter_by(category_id=category_id).all()
     return jsonify(Items=[i.serialize for i in items])
-#
-#
-# @app.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/JSON')
-# def menuItemJSON(restaurant_id, menu_id):
-#     Menu_Item = session.query(MenuItem).filter_by(id=menu_id).one()
-#     return jsonify(Menu_Item=Menu_Item.serialize)
-#
+
 #All categories JSON
 @app.route('/catalog/JSON')
 def catalogJSON():
@@ -398,24 +390,24 @@ def deleteItem(item_name, category_id):
 #         return render_template('deleteMenuItem.html', item=itemToDelete)
 #
 #
-# def createUser(login_session):
-#     newUser = User(name = login_session['username'], email =
-#         login_session['email'], picture = login_session['picture'])
-#     session.add(newUser)
-#     session.commit()
-#     user = session.query(User).filter_by(email = login_session['email']).one()
-#     return user.id
-#
-# def getUserInfo(user_id):
-#     user = session.query(User).filter_by(id = user_id).one()
-#     return user
-#
-# def getUserID(email):
-#     try:
-#         user = session.query(User).filter_by(email = email).one()
-#         return user.id
-#     except:
-#         return None
+def createUser(login_session):
+    newUser = User(name = login_session['username'], email =
+        login_session['email'], picture = login_session['picture'])
+    session.add(newUser)
+    session.commit()
+    user = session.query(User).filter_by(email = login_session['email']).one()
+    return user.id
+
+def getUserInfo(user_id):
+    user = session.query(User).filter_by(id = user_id).one()
+    return user
+
+def getUserID(email):
+    try:
+        user = session.query(User).filter_by(email = email).one()
+        return user.id
+    except:
+        return None
 
 def get_count(q):
     count_q = q.statement.with_only_columns([func.count()]).order_by(None)
