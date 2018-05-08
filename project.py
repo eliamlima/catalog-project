@@ -184,7 +184,11 @@ def catalogItemsJSON(category_id):
 @app.route('/catalog/JSON')
 def catalogJSON():
     catalog = session.query(Category).all()
-    return jsonify(catalog=[c.serialize for c in catalog])
+    connection = engine.connect()
+    trans = connection.begin()
+    connection.execute(catalog.insert(), items = session.query(Item).filter_by(category_id = c.id).all())
+    trans.commit()
+    return jsonify(Category=[cat.serialize for cat in catalog])
 
 
 # Show all categories

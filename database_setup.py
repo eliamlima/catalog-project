@@ -48,6 +48,7 @@ class Item(Base):
             'name'          : self.name,
             'description'   : self.description,
             'id'            : self.id,
+            'category_id'   : self.category_id,
         }
 
 ###insert at end of file####
