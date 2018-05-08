@@ -20,3 +20,6 @@ ADIÇÃO DE ITENS:
 EDIÇÃO E DELETE:
 - Também só possível com usuário logado.
 - Ao logar-se e clicar em um item específico, abaixo da descrição encontram-se links para edição e delete. Em cada um é aberta uma nova pagina para edição ou delete conforme o caso.
+
+JSON API:
+- Para acessar os dados em JSON acessar http://localhost:8000/catalog/JSON

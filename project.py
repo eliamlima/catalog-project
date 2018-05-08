@@ -173,22 +173,15 @@ def disconnect():
         flash("You were not logged in to begin with.")
         return redirect(url_for('showCatalog'))
 
-#JSON APIs to view Restaurant Information
-@app.route('/catalog/<int:category_id>/JSON')
-def catalogItemsJSON(category_id):
-    category = session.query(Category).filter_by(id=category_id).one()
-    items = session.query(Item).filter_by(category_id=category_id).all()
-    return jsonify(Items=[i.serialize for i in items])
-
 #All categories JSON
 @app.route('/catalog/JSON')
 def catalogJSON():
-    catalog = session.query(Category).all()
-    connection = engine.connect()
-    trans = connection.begin()
-    connection.execute(catalog.insert(), items = session.query(Item).filter_by(category_id = c.id).all())
-    trans.commit()
-    return jsonify(Category=[cat.serialize for cat in catalog])
+    catalog_all = session.query(Category).all()
+    items_all = session.query(Item).all()
+    catalog = {"Category": [cat.serialize for cat in catalog_all]}
+    for cate in catalog["Category"]:
+        cate["Item"] = [item.serialize for item in items_all if item.category_id == cate['id']]
+    return jsonify(catalog)
 
 
 # Show all categories
