@@ -5,6 +5,7 @@ REQUISITOS:
 - Verifice se na pasta já existem os arquivos "catalogwithusers.db" e "database_setup.pyc".
   - Se SIM: basta executar "python project.py" para rodar o servidor e abrirá a pagina com as categorias. Pois o banco ja estára populado.
   - Se NÃO: é necessário executar os arquivos database_setup.py e populate.py para popular o Banco de dados.
+  - Versão do Python: 3
 
 PAGINA INICIAL:
 - Acessada pelo endereço localhost:8000 ou localhost:8000/catalog.

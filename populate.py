@@ -24,22 +24,26 @@ category1 = Category(name="Soccer")
 session.add(category1)
 session.commit()
 
-item1 = Item(name="Balls", description="Various soccer Balls from training to pro", category=category1)
+item1 = Item(name="Balls", description="Various soccer Balls \
+    from training to pro", category=category1)
 
 session.add(item1)
 session.commit()
 
-item2 = Item(name="Footwear", description="Soccer shoes. Indoor and outdoor", category=category1)
+item2 = Item(name="Footwear", description="Soccer shoes. Indoor \
+    and outdoor", category=category1)
 
 session.add(item2)
 session.commit()
 
-item3 = Item(name="Shin guards", description="Various items to protect your shin and play safe", category=category1)
+item3 = Item(name="Shin guards", description="Various items to protect \
+    your shin and play safe", category=category1)
 
 session.add(item3)
 session.commit()
 
-item4 = Item(name="Socks", description="Soccer socks on many sizes", category=category1)
+item4 = Item(name="Socks", description="Soccer socks on many sizes",
+             category=category1)
 
 session.add(item4)
 session.commit()
@@ -51,17 +55,20 @@ category2 = Category(name="Baseball")
 session.add(category2)
 session.commit()
 
-item1 = Item(name="Baseballs", description="Various BaseBalls from training to pro", category=category2)
+item1 = Item(name="Baseballs", description="Various BaseBalls \
+    from training to pro", category=category2)
 
 session.add(item1)
 session.commit()
 
-item2 = Item(name="Bats", description="Various Bats from training to pro", category=category2)
+item2 = Item(name="Bats", description="Various Bats from training to pro",
+             category=category2)
 
 session.add(item2)
 session.commit()
 
-item3 = Item(name="Mitts", description="Various Mitts of various sizes", category=category2)
+item3 = Item(name="Mitts", description="Various Mitts of various sizes",
+             category=category2)
 
 session.add(item3)
 session.commit()
@@ -72,17 +79,20 @@ category3 = Category(name="Football")
 session.add(category3)
 session.commit()
 
-item1 = Item(name="Balls", description="Various Balls from training to pro", category=category3)
+item1 = Item(name="Balls", description="Various Balls from training to pro",
+             category=category3)
 
 session.add(item1)
 session.commit()
 
-item2 = Item(name="Gloves", description="Various Gloves of various sizes", category=category3)
+item2 = Item(name="Gloves", description="Various Gloves of various sizes",
+             category=category3)
 
 session.add(item2)
 session.commit()
 
-item3 = Item(name="Footwear", description="Football shoes and socks", category=category3)
+item3 = Item(name="Footwear", description="Football shoes and socks",
+             category=category3)
 
 session.add(item3)
 session.commit()
@@ -93,17 +103,20 @@ category4 = Category(name="Volleyball")
 session.add(category4)
 session.commit()
 
-item1 = Item(name="Balls", description="Various Balls from training to pro", category=category4)
+item1 = Item(name="Balls", description="Various Balls from training to pro",
+             category=category4)
 
 session.add(item1)
 session.commit()
 
-item2 = Item(name="Court Equipment", description="Nets and related", category=category4)
+item2 = Item(name="Court Equipment", description="Nets and related",
+             category=category4)
 
 session.add(item2)
 session.commit()
 
-item3 = Item(name="Footwear", description="Volleyball shoes and socks", category=category4)
+item3 = Item(name="Footwear", description="Volleyball shoes and socks",
+             category=category4)
 
 session.add(item3)
 session.commit()
